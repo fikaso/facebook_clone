@@ -11,28 +11,26 @@ export default function StoryPage({ story, allStories }) {
   const listOfStories = JSON.parse(allStories);
   const [currentStory, setCurrentStory] = useState(storyJson.src);
 
-  const handleNext = (e) => {
+  const handleSlide = (e, direction) => {
     e.preventDefault();
-
-    console.log(listOfStories[1].src);
 
     for (var key in listOfStories) {
       if (listOfStories[key].src == currentStory) {
-        setCurrentStory(listOfStories[parseInt(key) + 1].src);
-        break;
-      }
-    }
-  };
-
-  const handlePrev = (e) => {
-    e.preventDefault();
-
-    console.log(listOfStories[1].src);
-
-    for (var key in listOfStories) {
-      if (listOfStories[key].src == currentStory) {
-        setCurrentStory(listOfStories[parseInt(key) - 1].src);
-        break;
+        if (direction == "next") {
+          if (parseInt(key) < listOfStories.length - 1) {
+            setCurrentStory(listOfStories[parseInt(key) + 1].src);
+            break;
+          } else {
+            router.push("/");
+          }
+        } else if (direction == "prev") {
+          if (parseInt(key) > 0) {
+            setCurrentStory(listOfStories[parseInt(key) - 1].src);
+            break;
+          } else {
+            router.push("/");
+          }
+        }
       }
     }
   };
@@ -42,7 +40,7 @@ export default function StoryPage({ story, allStories }) {
       <Header />
       <div className="flex items-center justify-center">
         <ArrowCircleLeftIcon
-          onClick={(e) => handlePrev(e)}
+          onClick={(e) => handleSlide(e, "prev")}
           className="h-10 text-gray-300"
         />
         <img
@@ -51,7 +49,7 @@ export default function StoryPage({ story, allStories }) {
           className="h-auto w-auto max-h-screen"
         />
         <ArrowCircleRightIcon
-          onClick={(e) => handleNext(e)}
+          onClick={(e) => handleSlide(e, "next")}
           className="h-10 text-gray-300"
         />
       </div>

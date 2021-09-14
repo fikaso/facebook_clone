@@ -1,16 +1,36 @@
-import Image from "next/image";
-import { ChatAltIcon, ShareIcon, ThumbUpIcon } from "@heroicons/react/outline";
-function Post({ name, email, image, message, postImage, timestamp }) {
+import {
+  ChatAltIcon,
+  ShareIcon,
+  ThumbUpIcon,
+  DotsHorizontalIcon,
+} from "@heroicons/react/outline";
+import { Menu } from "@headlessui/react";
+function Post({
+  id,
+  name,
+  email,
+  image,
+  message,
+  postImage,
+  timestamp,
+  deleteFunction,
+}) {
   return (
     <div className="flex flex-col w-full">
       <div className="pt-5 mt-5 bg-white rounded-t-2xl shadow-sm">
-        <div className="flex flex-col mx-5">
-          <div className="flex space-x-2 items-center mb-2">
-            <img src={image} alt="profile_image" />
-            <div>
-              <p>{name}</p>
-              <p>{new Date(timestamp?.toDate()).toLocaleString()}</p>
+        <div className="flex flex-col mx-5 ">
+          <div className="flex justify-end  items-center">
+            <div className="flex space-x-2 items-center mb-2">
+              <img src={image} alt="profile_image" />
+              <div>
+                <p>{name}</p>
+                <p>{new Date(timestamp?.toDate()).toLocaleString()}</p>
+              </div>
             </div>
+            <DotsHorizontalIcon
+              onClick={(e) => deleteFunction(e, id)}
+              className="h-9 ml-auto text-gray-400 hover:bg-gray-100 rounded-l cursor-pointer"
+            />
           </div>
 
           <p>{message}</p>
