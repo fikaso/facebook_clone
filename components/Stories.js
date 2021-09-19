@@ -1,33 +1,21 @@
+import { useCollection } from "react-firebase-hooks/firestore";
+import { db } from "../firebase";
 import Story from "./Story";
-const stories = [
-  {
-    src: "/after_christmas.jpg",
-    profile: "/profile.jpg",
-    name: "Filip Vranjes",
-  },
-  {
-    src: "/s5.jpg",
-    profile: "/after_cookie.jpg",
-    name: "Filip Vranjes",
-  },
-  {
-    src: "/s6.jpg",
-    profile: "/after_lights.jpg",
-    name: "Filip Vranjes",
-  },
-  {
-    src: "/s7.jpg",
-    profile: "/IMG_1430.jpg",
-    name: "Filip Vranjes",
-  },
-];
+import UploadStory from "./UploadStory";
 
 function Stories() {
+  const [realTimeStories] = useCollection(
+    db.collection("stories").orderBy("timestamp", "desc")
+  );
+
   return (
-    <div className="flex justify-center space-x-3 mx-auto">
-      {stories.map((story) => (
-        <Story key={story.src} story={story} allStories={stories} />
-      ))}
+    <div className="flex space-x-3 mx-auto">
+      <UploadStory image="/after_christmas.jpg" />
+      <div className="flex justify-center space-x-3">
+        {realTimeStories?.docs.map((story) => (
+          <Story key={story.id} storyImage={story.data().storyImage} />
+        ))}
+      </div>
     </div>
   );
 }

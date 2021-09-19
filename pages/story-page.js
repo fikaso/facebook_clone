@@ -5,34 +5,37 @@ import {
   ArrowCircleRightIcon,
   ArrowCircleLeftIcon,
 } from "@heroicons/react/outline";
-export default function StoryPage({ story, allStories }) {
+import { useCollection } from "react-firebase-hooks/firestore";
+import { db } from "../firebase";
+export default function StoryPage({ story }) {
   const router = useRouter();
-  const storyJson = JSON.parse(story);
-  const listOfStories = JSON.parse(allStories);
-  const [currentStory, setCurrentStory] = useState(storyJson.src);
+  const [currentStory, setCurrentStory] = useState(story);
+
+  const [realTimeStories] = useCollection(
+    db.collection("stories").orderBy("timestamp", "desc")
+  );
 
   const handleSlide = (e, direction) => {
     e.preventDefault();
+    console.log("cur: ", currentStory);
 
-    for (var key in listOfStories) {
-      if (listOfStories[key].src == currentStory) {
+    realTimeStories?.docs.map((story, index) => {
+      if (story.data().storyImage == currentStory) {
         if (direction == "next") {
-          if (parseInt(key) < listOfStories.length - 1) {
-            setCurrentStory(listOfStories[parseInt(key) + 1].src);
-            break;
+          if (index < realTimeStories.docs.length - 1) {
+            setCurrentStory(realTimeStories.docs[index + 1].data().storyImage);
           } else {
             router.push("/");
           }
         } else if (direction == "prev") {
-          if (parseInt(key) > 0) {
-            setCurrentStory(listOfStories[parseInt(key) - 1].src);
-            break;
+          if (index > 0) {
+            setCurrentStory(realTimeStories.docs[index - 1].data().storyImage);
           } else {
             router.push("/");
           }
         }
       }
-    }
+    });
   };
 
   return (
@@ -61,7 +64,6 @@ export async function getServerSideProps(context) {
   return {
     props: {
       story: context.query.story,
-      allStories: context.query.allStories,
     },
   };
 }

@@ -19,7 +19,7 @@ function Post({
     <div className="flex flex-col w-full">
       <div className="pt-5 mt-5 bg-white rounded-t-2xl shadow-sm">
         <div className="flex flex-col mx-5 ">
-          <div className="flex justify-end  items-center">
+          <div className="flex items-center justify-between">
             <div className="flex space-x-2 items-center mb-2">
               <img src={image} alt="profile_image" />
               <div>
@@ -27,10 +27,40 @@ function Post({
                 <p>{new Date(timestamp?.toDate()).toLocaleString()}</p>
               </div>
             </div>
-            <DotsHorizontalIcon
-              onClick={(e) => deleteFunction(e, id)}
-              className="h-9 ml-auto text-gray-400 hover:bg-gray-100 rounded-l cursor-pointer"
-            />
+            <Menu as="div" className="flex flex-col ">
+              <Menu.Button>
+                <DotsHorizontalIcon className="h-8 ml-auto text-gray-400 hover:bg-gray-100 rounded-l cursor-pointer" />
+              </Menu.Button>
+              <Menu.Items className="flex flex-col justify-end text-right rounded-2xl bg-red-100">
+                <Menu.Item>
+                  {({ active }) => (
+                    <p
+                      onClick={(e) => deleteFunction(e, id)}
+                      className={`inline-block ${
+                        active
+                          ? "bg-gray-400 rounded-xl text-white cursor-pointer p-2"
+                          : "bg-white text-black p-2"
+                      }`}
+                    >
+                      Move to trash
+                    </p>
+                  )}
+                </Menu.Item>
+                <Menu.Item>
+                  {({ active }) => (
+                    <p
+                      className={`inline-block ${
+                        active
+                          ? "bg-gray-400 rounded-xl text-white cursor-pointer p-2"
+                          : "bg-white text-black p-2"
+                      }`}
+                    >
+                      Share post link
+                    </p>
+                  )}
+                </Menu.Item>
+              </Menu.Items>
+            </Menu>
           </div>
 
           <p>{message}</p>

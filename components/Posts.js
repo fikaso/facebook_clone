@@ -9,7 +9,7 @@ function Posts() {
 
   const deleteItem = (e, docId) => {
     e.preventDefault();
-    // db.collection("posts").doc(docId).delete();
+    db.collection("posts").doc(docId).delete();
   };
 
   return (
