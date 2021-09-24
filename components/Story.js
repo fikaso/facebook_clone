@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-function Story({ storyImage }) {
+function Story({ storyImage, hours }) {
   return (
     <Link
       href={{
@@ -27,6 +27,10 @@ function Story({ storyImage }) {
             src={storyImage}
             layout="fill"
           />
+
+          <p className="absolute top-2 right-2 text-white text-xl">
+            {parseInt(hours)}h
+          </p>
         </div>
       )}
     </Link>

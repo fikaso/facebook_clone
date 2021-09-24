@@ -15,7 +15,13 @@ function Stories() {
       <UploadStory image={session.user.image} />
       <div className="flex justify-center space-x-3">
         {realTimeStories?.docs.map((story) => (
-          <Story key={story.id} storyImage={story.data().storyImage} />
+          <Story
+            key={story.id}
+            storyImage={story.data().storyImage}
+            hours={
+              (Date.now() - story.data().timestamp.toMillis()) / 1000 / 60 / 60
+            }
+          />
         ))}
       </div>
     </div>
