@@ -28,9 +28,7 @@ function Story({ storyImage, hours }) {
             layout="fill"
           />
 
-          <p className="absolute top-2 right-2 text-white text-xl">
-            {parseInt(hours)}h
-          </p>
+          <p className="absolute top-2 right-2 text-white text-xl">{hours}h</p>
         </div>
       )}
     </Link>

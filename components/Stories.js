@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/client";
+import { useEffect } from "react";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { db } from "../firebase";
 import Story from "./Story";
@@ -18,14 +19,15 @@ function Stories() {
           <Story
             key={story.id}
             storyImage={story.data().storyImage}
-            hours={
-              (Date.now() - story.data().timestamp.toMillis()) / 1000 / 60 / 60
-            }
+            hours={calcElapsedTime(story.data().timestamp)}
           />
         ))}
       </div>
     </div>
   );
 }
+export const calcElapsedTime = (timestamp) => {
+  return parseInt((Date.now() - timestamp.toMillis()) / 1000 / 60 / 60);
+};
 
 export default Stories;

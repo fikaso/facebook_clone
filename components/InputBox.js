@@ -7,7 +7,7 @@ import { useRef } from "react";
 import { db, storage } from "../firebase";
 import firebase from "firebase/compat/app";
 
-function InputBox() {
+function InputBox({ buttons, placeholder, postToComment }) {
   const [session] = useSession();
   const inputRef = useRef(null);
   const filePickerRef = useRef(null);
@@ -72,12 +72,29 @@ function InputBox() {
     };
   };
 
+  const sendComment = (e) => {
+    e.preventDefault();
+    if (!inputRef.current.value) return;
+    db.collection("posts").doc(postToComment).collection("comments").add({
+      username: session.user.name,
+      comment: inputRef.current.value,
+      userImage: session.user.image,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+
+    inputRef.current.value = "";
+  };
+
   const removeImage = () => {
     setImageToPost(null);
   };
 
   return (
-    <div className="bg-white p-2 rounded-2xl shadow-md text-gray-500 font-medium mt-6">
+    <div
+      className={`bg-white p-1 text-gray-500 font-medium ${
+        buttons ? "mt-6 rounded-2xl shadow-md" : ""
+      } `}
+    >
       <div className="flex space-x-4 p-4 items-center">
         <Image
           className="rounded-full"
@@ -90,9 +107,17 @@ function InputBox() {
             className="rounded-full flex-grow bg-gray-100 focus:outline-none p-2"
             type="text"
             ref={inputRef}
-            placeholder={`What's on your mind ${session.user.name}`}
+            placeholder={
+              placeholder
+                ? placeholder
+                : `What's on your mind ${session.user.name}`
+            }
           />
-          <button hidden type="submit" onClick={sendPost}>
+          <button
+            hidden
+            type="submit"
+            onClick={!postToComment ? sendPost : sendComment}
+          >
             Submit
           </button>
         </form>
@@ -111,29 +136,31 @@ function InputBox() {
         )}
       </div>
 
-      <div className="flex justify-evenly p-3 border-t">
-        <div className="inputIcon">
-          <VideoCameraIcon className="h-7 text-red-500" />
-          <p className="text-xs sm:text-sm xl:text-base">Live Video</p>
+      {buttons && (
+        <div className="flex justify-evenly p-3 border-t">
+          <div className="inputIcon">
+            <VideoCameraIcon className="h-7 text-red-500" />
+            <p className="text-xs sm:text-sm xl:text-base">Live Video</p>
+          </div>
+          <div
+            onClick={() => filePickerRef.current.click()}
+            className="inputIcon"
+          >
+            <CameraIcon className="h-7 text-green-400" />
+            <p className="text-xs sm:text-sm xl:text-base">Photo/Video</p>
+            <input
+              ref={filePickerRef}
+              onChange={addImageToPost}
+              type="file"
+              hidden
+            />
+          </div>
+          <div className="inputIcon">
+            <EmojiHappyIcon className="h-7 text-yellow-300" />
+            <p className="text-xs sm:text-sm xl:text-base">Feeling/Activity</p>
+          </div>
         </div>
-        <div
-          onClick={() => filePickerRef.current.click()}
-          className="inputIcon"
-        >
-          <CameraIcon className="h-7 text-green-400" />
-          <p className="text-xs sm:text-sm xl:text-base">Photo/Video</p>
-          <input
-            ref={filePickerRef}
-            onChange={addImageToPost}
-            type="file"
-            hidden
-          />
-        </div>
-        <div className="inputIcon">
-          <EmojiHappyIcon className="h-7 text-yellow-300" />
-          <p className="text-xs sm:text-sm xl:text-base">Feeling/Activity</p>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

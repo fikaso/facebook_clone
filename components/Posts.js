@@ -17,8 +17,8 @@ function Posts() {
       {realTimePosts?.docs.map((post) => (
         <Post
           key={post.id}
-          id={post.id}
-          name={post.data().name}
+          postId={post.id}
+          username={post.data().name}
           email={post.data().email}
           image={post.data().image}
           message={post.data().message}

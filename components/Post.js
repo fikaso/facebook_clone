@@ -1,13 +1,20 @@
+import { db } from "../firebase";
 import {
   ChatAltIcon,
   ShareIcon,
-  ThumbUpIcon,
   DotsHorizontalIcon,
 } from "@heroicons/react/outline";
+import { ThumbUpIcon } from "@heroicons/react/solid";
 import { Menu } from "@headlessui/react";
+import { session, useSession } from "next-auth/client";
+import { useEffect, useState } from "react";
+import InputBox from "./InputBox";
+import Comment from "./Comment";
+import { calcElapsedTime } from "./Stories";
+import { comment } from "postcss";
 function Post({
-  id,
-  name,
+  postId,
+  username,
   email,
   image,
   message,
@@ -15,6 +22,57 @@ function Post({
   timestamp,
   deleteFunction,
 }) {
+  const [session] = useSession();
+  const [likes, setLikes] = useState(false);
+  const [comments, setComments] = useState(false);
+  const [displayComments, setdisplayComments] = useState(false);
+
+  useEffect(() => {
+    if (postId) {
+      db.collection("posts")
+        .doc(postId)
+        .collection("comments")
+        .onSnapshot((snapshot) => {
+          setComments(snapshot.docs.map((doc) => doc));
+        });
+    }
+  }, [postId]);
+
+  useEffect(() => {
+    if (postId) {
+      db.collection("posts")
+        .doc(postId)
+        .collection("likes")
+        .onSnapshot((snapshot) => {
+          setLikes(snapshot.docs.map((doc) => doc));
+        });
+    }
+  }, [postId]);
+
+  const handleLike = (e) => {
+    e.preventDefault();
+    let found = false;
+
+    for (var i = 0; i < likes.length; i++) {
+      if (likes[i].data().username === session.user.name) {
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      db.collection("posts")
+        .doc(postId)
+        .collection("likes")
+        .add({ username: session.user.name });
+    } else {
+      db.collection("posts")
+        .doc(postId)
+        .collection("likes")
+        .doc(likes[i].id)
+        .delete();
+    }
+  };
+
   return (
     <div className="flex flex-col w-full">
       <div className="pt-5 mt-5 bg-white rounded-t-2xl shadow-sm">
@@ -23,8 +81,10 @@ function Post({
             <div className="flex space-x-2 items-center mb-2">
               <img src={image} alt="profile_image" />
               <div>
-                <p>{name}</p>
-                <p>{new Date(timestamp?.toDate()).toLocaleString()}</p>
+                <p className="text-black">{username}</p>
+                <p className="text-sm text-gray-500 hover:underline">
+                  {calcElapsedTime(timestamp)}h
+                </p>
               </div>
             </div>
             <Menu as="div" className="flex flex-col ">
@@ -35,7 +95,7 @@ function Post({
                 <Menu.Item>
                   {({ active }) => (
                     <p
-                      onClick={(e) => deleteFunction(e, id)}
+                      onClick={(e) => deleteFunction(e, postId)}
                       className={`inline-block ${
                         active
                           ? "bg-gray-400 rounded-xl text-white cursor-pointer p-2"
@@ -75,23 +135,73 @@ function Post({
             />
           </div>
         )}
-
-        {/* Footer of image */}
+        {likes.length ? (
+          <div className="flex justify-between items-center mx-5 mb-2">
+            <div className="flex items-center">
+              <ThumbUpIcon
+                className={`h-5 mr-2 p-1  bg-blue-500 rounded-full text-white `}
+              />
+              <p className="text-gray-500">{likes.length}</p>
+            </div>
+            {comments.length && (
+              <p
+                onClick={(e) => setdisplayComments(!displayComments)}
+                className="hover:underline text-gray-500 cursor-pointer"
+              >
+                {comments.length} comments
+              </p>
+            )}
+          </div>
+        ) : (
+          comments.length && (
+            <p
+              onClick={(e) => setdisplayComments(!displayComments)}
+              className="flex justify-end hover:underline text-gray-500 cursor-pointer mx-5 mb-2"
+            >
+              {comments.length} comments
+            </p>
+          )
+        )}
       </div>
-      <div className="flex justify-between items-center bg-white shadow-md rounded-b-2xl text-gray-400 border-t">
-        <div className="inputIcon rounded-none">
-          <ThumbUpIcon className="h-4" />
-          <p className="test-xs sm:text-base">Like</p>
+      {/* Footer of image */}
+      <div
+        className={`flex justify-between items-center bg-white text-gray-400 border-t ${
+          displayComments ? "" : "rounded-b-xl shadow-sm"
+        }`}
+      >
+        <div onClick={(e) => handleLike(e)} className="inputIcon rounded-none">
+          <ThumbUpIcon
+            className={`h-4 ${likes.length > 0 ? "text-blue-500" : ""}`}
+          />
+          <p className="text-xs sm:text-base">Like</p>
         </div>
-        <div className="inputIcon rounded-none">
+        <div
+          onClick={(e) => setdisplayComments(!displayComments)}
+          className="inputIcon rounded-none"
+        >
           <ChatAltIcon className="h-4" />
-          <p className="test-xs sm:text-base">Comment</p>
+          <p className="text-xs sm:text-base">Comment</p>
         </div>
         <div className="inputIcon rounded-none">
           <ShareIcon className="h-4" />
-          <p className="test-xs sm:text-base">Share</p>
+          <p className="text-xs sm:text-base">Share</p>
         </div>
       </div>
+      {displayComments && (
+        <div>
+          <InputBox postToComment={postId} placeholder="Write a comment..." />
+          {comments?.map((comment) => (
+            <Comment
+              postId={postId}
+              commentId={comment.id}
+              username={comment.data().username}
+              comment={comment.data().comment}
+              userImage={comment.data().userImage}
+              timestamp={comment.data().timestamp}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
