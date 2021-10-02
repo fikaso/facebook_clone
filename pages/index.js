@@ -5,9 +5,34 @@ import Sidebar from "../components/Sidebar";
 import Login from "../components/Login";
 import Feed from "../components/Feed";
 import Widgets from "../components/Widgets";
+import { db } from "../firebase";
+import { useEffect, useState } from "react";
+import Chat from "../components/Chat";
 
 export default function Home({ session }) {
-  if (!session) return <Login />;
+  const [chatWindows, setChatWindows] = useState([]);
+
+  useEffect(() => {
+    if (session.user) {
+      db.collection("users").doc(session.user.email).set(
+        {
+          username: session.user.name,
+          email: session.user.email,
+          image: session.user.image,
+        },
+        { merge: true }
+      );
+    }
+  }, []);
+
+  const handleChatToggle = (chatWindow) => {
+    if (!chatWindows.includes(chatWindow)) {
+      setChatWindows([...chatWindows, chatWindow]);
+    } else {
+      setChatWindows(chatWindows.filter((chatName) => chatName != chatWindow));
+    }
+  };
+
   return (
     <div className="bg-gray-100">
       <Head>
@@ -23,8 +48,13 @@ export default function Home({ session }) {
         {/* Feed */}
         <Feed />
         {/* Widget */}
-        <Widgets />
+        <Widgets handleChatToggle={handleChatToggle} />
       </main>
+      <div className="flex fixed bottom-0 right-0">
+        {chatWindows?.map((chat) => (
+          <Chat chatId={chat} />
+        ))}
+      </div>
     </div>
   );
 }

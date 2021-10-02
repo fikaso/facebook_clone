@@ -1,8 +1,13 @@
 import Image from "next/image";
+import { useState } from "react";
+import Chat from "./Chat";
 
-function Contact({ src, name }) {
+function Contact({ contactId, src, name, toggleChat }) {
   return (
-    <div className="flex space-x-3 mb-2 items-center relative hover:bg-gray-200 cursor-pointer p-2 rounded-xl">
+    <div
+      onClick={(e) => toggleChat(contactId)}
+      className="flex space-x-3 mb-2 items-center relative hover:bg-gray-200 cursor-pointer p-2 rounded-xl"
+    >
       <Image
         className="rounded-full"
         src={"/" + src}

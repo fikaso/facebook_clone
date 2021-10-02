@@ -25,7 +25,7 @@ function Comment({
           setLikes(snapshot.docs.map((doc) => doc));
         });
     }
-  }, [commentId]);
+  }, [postId, commentId]);
 
   const handleLike = (e) => {
     e.preventDefault();
@@ -54,8 +54,6 @@ function Comment({
         .delete();
     }
   };
-
-  console.log("Likes: ", likes.length);
   return (
     <div className="flex space-x-2 p-2 bg-white text-sm">
       <img src={userImage} alt="userImage" className="rounded-full h-10 " />
