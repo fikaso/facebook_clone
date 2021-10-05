@@ -7,7 +7,7 @@ import { useSession } from "next-auth/client";
 import firebase from "firebase/compat/app";
 import Message from "./Message";
 
-function Chat({ chatId }) {
+function Chat({ chatId, handleChatToggle }) {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
 
@@ -87,14 +87,20 @@ function Chat({ chatId }) {
       <div className="flex justify-between shadow-md p-2">
         <div>
           <img src="" alt="" />
-          <p>{chatId}</p>
+          <p>{chatUser?.data().username}</p>
         </div>
         <div className="flex items-center">
-          <MinusIcon className="h-5 text-blue-500" />
-          <XIcon className="h-5 text-blue-500 ml-2" />
+          <MinusIcon
+            onClick={(e) => handleChatToggle(chatId)}
+            className="h-5 text-blue-500 cursor-pointer"
+          />
+          <XIcon
+            onClick={(e) => handleChatToggle(chatId)}
+            className="h-5 text-blue-500 ml-2 cursor-pointer"
+          />
         </div>
       </div>
-      <div className="flex flex-col justify-end p-2 h-64 max-h-64">
+      <div className="flex flex-col justify-end p-2 h-64 max-h-64 overflow-y-scroll scrollbar-hide">
         {messages?.map((message) => (
           <Message msg={message} />
         ))}

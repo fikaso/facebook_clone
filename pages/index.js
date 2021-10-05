@@ -52,7 +52,7 @@ export default function Home({ session }) {
       </main>
       <div className="flex fixed bottom-0 right-0">
         {chatWindows?.map((chat) => (
-          <Chat chatId={chat} />
+          <Chat chatId={chat} handleChatToggle={handleChatToggle} />
         ))}
       </div>
     </div>
