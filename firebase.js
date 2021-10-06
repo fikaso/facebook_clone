@@ -1,6 +1,8 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 import "firebase/compat/storage";
+import "firebase/compat/auth";
+import { FacebookAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB-X6n5gxbi7bpApWPlyIvAvIY43AsB-tg",
@@ -18,11 +20,9 @@ if (!firebase.apps.length) {
   app = firebase.app();
 }
 
-// const app = !firebase.apps.length
-//   ? firebase.initializeApp(firebaseConfig)
-//   : firebase.app();
-
 const db = app.firestore();
 const storage = firebase.storage();
+const auth = firebase.auth();
+const facebookProvider = new FacebookAuthProvider();
 
-export { db, storage };
+export { db, storage, auth, facebookProvider };

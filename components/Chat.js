@@ -16,13 +16,6 @@ function Chat({ chatId, handleChatToggle }) {
   const [chatUser, setChatUser] = useState();
 
   useEffect(() => {
-    db.collection("users").onSnapshot((snapshot) => {
-      setUser(
-        snapshot.docs.filter((doc) => doc.data().email == session.user.email)[0]
-          .ref
-      );
-    });
-
     db.collection("users")
       .where("email", "==", session.user.email)
       .get()
@@ -60,8 +53,6 @@ function Chat({ chatId, handleChatToggle }) {
 
   const sendMessage = (event, like) => {
     event.preventDefault();
-
-    console.log(event);
 
     if (like) {
       db.collection("chats").add({
