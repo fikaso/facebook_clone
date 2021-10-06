@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import Chat from "../components/Chat";
 
 export default function Home({ session }) {
+  if (!session) return <Login />;
   const [chatWindows, setChatWindows] = useState([]);
 
   useEffect(() => {
