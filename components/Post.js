@@ -192,6 +192,7 @@ function Post({
           <InputBox postToComment={postId} placeholder="Write a comment..." />
           {comments?.map((comment) => (
             <Comment
+              key={comment.id}
               postId={postId}
               commentId={comment.id}
               username={comment.data().username}

@@ -10,21 +10,22 @@ import { useEffect, useState } from "react";
 import Chat from "../components/Chat";
 
 export default function Home({ session }) {
-  if (!session) return <Login />;
   const [chatWindows, setChatWindows] = useState([]);
-
   useEffect(() => {
-    if (session.user) {
-      db.collection("users").doc(session.user.email).set(
-        {
-          username: session.user.name,
-          email: session.user.email,
-          image: session.user.image,
-        },
-        { merge: true }
-      );
+    if (session) {
+      if (session.user) {
+        db.collection("users").doc(session.user.email).set(
+          {
+            username: session.user.name,
+            email: session.user.email,
+            image: session.user.image,
+          },
+          { merge: true }
+        );
+      }
     }
-  }, []);
+  }, [session]);
+  if (!session) return <Login />;
 
   const handleChatToggle = (chatWindow) => {
     if (!chatWindows.includes(chatWindow)) {
@@ -53,7 +54,7 @@ export default function Home({ session }) {
       </main>
       <div className="flex fixed bottom-0 right-0">
         {chatWindows?.map((chat) => (
-          <Chat chatId={chat} handleChatToggle={handleChatToggle} />
+          <Chat key={chat} chatId={chat} handleChatToggle={handleChatToggle} />
         ))}
       </div>
     </div>

@@ -20,6 +20,7 @@ function Widgets({ handleChatToggle }) {
       </div>
       {users?.docs.map((contact) => (
         <Contact
+          key={contact.id}
           contactId={contact.id}
           src={contact.data().image}
           name={contact.data().username}

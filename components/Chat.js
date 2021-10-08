@@ -10,7 +10,6 @@ import Message from "./Message";
 function Chat({ chatId, handleChatToggle }) {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
-
   const [session] = useSession();
   const [user, setUser] = useState();
   const [chatUser, setChatUser] = useState();
@@ -102,7 +101,7 @@ function Chat({ chatId, handleChatToggle }) {
       </div>
       <div className="flex flex-col justify-end p-2 h-64 max-h-64 overflow-y-scroll scrollbar-hide">
         {messages?.map((message) => (
-          <Message msg={message} />
+          <Message key={message.id} msg={message} />
         ))}
       </div>
       <div className="flex justify-between m-2">
