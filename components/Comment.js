@@ -25,6 +25,9 @@ function Comment({
           setLikes(snapshot.docs.map((doc) => doc));
         });
     }
+    return () => {
+      setLikes(false);
+    };
   }, [postId, commentId]);
 
   const handleLike = (e) => {

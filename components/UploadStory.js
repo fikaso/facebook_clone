@@ -11,7 +11,6 @@ import firebase from "firebase/compat/app";
 function UploadStory({ image }) {
   const [session] = useSession();
   const filePickerRef = useRef(null);
-  const inputRef = useRef(null);
   const [imageToPost, setImageToPost] = useState(null);
 
   const handleUpload = (e) => {
@@ -71,10 +70,10 @@ function UploadStory({ image }) {
     <div className="">
       <div
         onClick={() => filePickerRef.current.click()}
-        className="relative h-14 w-14 md:h-20 md:w-20 lg:h-56 lg:w-32 cursor-pointer  p-3 transition-duration-200 transform ease-in hover:scale-105 hover:animate-pulse col-span-4"
+        className="relative h-56 w-32 cursor-pointer  p-3 transition-duration-200 transform ease-in hover:scale-105 hover:animate-pulse col-span-4"
       >
         <Image
-          className="object-cover brightness-75 rounded-full lg:rounded-3xl"
+          className="object-cover brightness-75 rounded-xl lg:rounded-3xl"
           src={image}
           layout="fill"
         />

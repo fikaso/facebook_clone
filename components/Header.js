@@ -63,7 +63,7 @@ function Header(ses) {
           height="40  "
         />
 
-        <p className="font-semibold whitespace-nowrap pr-3">
+        <p className="hidden md:flex font-semibold whitespace-nowrap pr-3">
           {session.user.name}
         </p>
         <ViewGridIcon className="icon" />

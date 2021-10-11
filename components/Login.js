@@ -2,7 +2,7 @@ import Image from "next/image";
 import { signIn } from "next-auth/client";
 function Login() {
   return (
-    <div className="grid place-items-center">
+    <div className="flex flex-col items-center h-screen justify-center">
       <Image src="/logo.png" height={200} width={200} objectFit="contain" />
 
       <h1

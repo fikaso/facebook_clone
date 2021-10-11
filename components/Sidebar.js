@@ -15,7 +15,7 @@ import { session } from "next-auth/client";
 function Sidebar() {
   const [session, loading] = useSession();
   return (
-    <div className="p-2 mt-5">
+    <div className="hidden sm:flex flex-col p-2 mt-5">
       <SidebarRow src={session.user.image} title={session.user.name} />
       <SidebarRow Icon={UsersIcon} title="Friends" />
       <SidebarRow Icon={UserGroupIcon} title="Groups" />

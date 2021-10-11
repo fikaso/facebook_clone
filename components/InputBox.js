@@ -137,16 +137,16 @@ function InputBox({ buttons, placeholder, postToComment }) {
       </div>
 
       {buttons && (
-        <div className="flex justify-evenly p-3 border-t">
-          <div className="inputIcon">
-            <VideoCameraIcon className="h-7 text-red-500" />
+        <div className="flex justify-evenly p-1 border-t">
+          <div className="inputIcon sm:flex flex-col">
+            <VideoCameraIcon className="h-5 md:h-7 text-red-500" />
             <p className="text-xs sm:text-sm xl:text-base">Live Video</p>
           </div>
           <div
             onClick={() => filePickerRef.current.click()}
-            className="inputIcon"
+            className="inputIcon sm:flex flex-col"
           >
-            <CameraIcon className="h-7 text-green-400" />
+            <CameraIcon className="h-5 md:h-7 text-green-400" />
             <p className="text-xs sm:text-sm xl:text-base">Photo/Video</p>
             <input
               ref={filePickerRef}
@@ -155,8 +155,8 @@ function InputBox({ buttons, placeholder, postToComment }) {
               hidden
             />
           </div>
-          <div className="inputIcon">
-            <EmojiHappyIcon className="h-7 text-yellow-300" />
+          <div className="inputIcon sm:flex flex-col">
+            <EmojiHappyIcon className="h-5 md:h-7 text-yellow-300" />
             <p className="text-xs sm:text-sm xl:text-base">Feeling/Activity</p>
           </div>
         </div>

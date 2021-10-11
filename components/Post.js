@@ -36,6 +36,11 @@ function Post({
           setComments(snapshot.docs.map((doc) => doc));
         });
     }
+    return () => {
+      setLikes(false);
+      setComments(false);
+      setdisplayComments(false);
+    };
   }, [postId]);
 
   useEffect(() => {
@@ -47,6 +52,11 @@ function Post({
           setLikes(snapshot.docs.map((doc) => doc));
         });
     }
+    return () => {
+      setLikes(false);
+      setComments(false);
+      setdisplayComments(false);
+    };
   }, [postId]);
 
   const handleLike = (e) => {
@@ -143,7 +153,7 @@ function Post({
               />
               <p className="text-gray-500">{likes.length}</p>
             </div>
-            {comments.length && (
+            {comments.length > 0 && (
               <p
                 onClick={(e) => setdisplayComments(!displayComments)}
                 className="hover:underline text-gray-500 cursor-pointer"
@@ -153,7 +163,7 @@ function Post({
             )}
           </div>
         ) : (
-          comments.length && (
+          comments.length > 0 && (
             <p
               onClick={(e) => setdisplayComments(!displayComments)}
               className="flex justify-end hover:underline text-gray-500 cursor-pointer mx-5 mb-2"

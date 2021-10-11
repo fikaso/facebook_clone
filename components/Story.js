@@ -1,7 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
+import { db } from "../firebase";
+import { useEffect, useState } from "react";
 
-function Story({ storyImage, hours }) {
+function Story({ id, storyImage, hours }) {
+  useEffect(() => {
+    if (hours > 24) {
+      db.collection("stories").doc(id).delete();
+    }
+  }, []);
   return (
     <Link
       href={{
@@ -12,7 +19,7 @@ function Story({ storyImage, hours }) {
       }}
     >
       {storyImage && (
-        <div className="relative h-14 w-14 md:h-20 md:w-20 lg:h-56 lg:w-32 cursor-pointer overflow-x-auto p-3 transition-duration-200 transform ease-in hover:scale-105 hover:animate-pulse">
+        <div className="relative h-56 w-32 cursor-pointer overflow-x-auto p-3 transition-duration-200 transform ease-in hover:scale-105 hover:animate-pulse">
           <Image
             unoptimized={true}
             className="absolute rounded-full z-50 top-10"
@@ -23,7 +30,7 @@ function Story({ storyImage, hours }) {
           />
           <Image
             unoptimized={true}
-            className="object-cover brightness-75 rounded-full lg:rounded-3xl"
+            className="object-cover brightness-75 rounded-xl"
             src={storyImage}
             layout="fill"
           />
