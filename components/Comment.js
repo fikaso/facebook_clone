@@ -25,37 +25,40 @@ function Comment({
           setLikes(snapshot.docs.map((doc) => doc));
         });
     }
-    return () => {
-      setLikes(false);
-    };
   }, [postId, commentId]);
 
   const handleLike = (e) => {
     e.preventDefault();
-    let found = false;
 
-    for (var i = 0; i < likes.length; i++) {
-      if (likes[i].data().username === session.user.name) {
-        found = true;
-        break;
-      }
-    }
-    if (!found) {
-      db.collection("posts")
-        .doc(postId)
-        .collection("comments")
-        .doc(commentId)
-        .collection("likes")
-        .add({ username: session.user.name });
-    } else {
-      db.collection("posts")
-        .doc(postId)
-        .collection("comments")
-        .doc(commentId)
-        .collection("likes")
-        .doc(likes[i].id)
-        .delete();
-    }
+    db.collection("posts")
+      .doc(postId)
+      .collection("comments")
+      .doc(commentId)
+      .collection("likes")
+      .where("username", "==", session.user.name)
+      .get()
+      .then((querySnapshot) => {
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach((doc) => {
+            if (doc.exists) {
+              db.collection("posts")
+                .doc(postId)
+                .collection("comments")
+                .doc(commentId)
+                .collection("likes")
+                .doc(doc.id)
+                .delete();
+            }
+          });
+        } else {
+          db.collection("posts")
+            .doc(postId)
+            .collection("comments")
+            .doc(commentId)
+            .collection("likes")
+            .add({ username: session.user.name });
+        }
+      });
   };
   return (
     <div className="flex space-x-2 p-2 bg-white text-sm">

@@ -10,8 +10,6 @@ function Stories() {
     db.collection("stories").orderBy("timestamp", "desc")
   );
 
-  console.log("stories: ", realTimeStories);
-
   return (
     <div className="flex space-x-3 mx-auto overflow-x-scroll scrollbar-hide">
       <UploadStory image={session.user.image} />

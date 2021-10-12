@@ -22,9 +22,6 @@ export default function Home({ session }) {
           },
           { merge: true }
         );
-        return () => {
-          setChatWindows([]);
-        };
       }
     }
   }, [session]);

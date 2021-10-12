@@ -37,12 +37,6 @@ function Chat({ chatId, handleChatToggle }) {
       .then((docSnapshot) => {
         setChatUser(docSnapshot);
       });
-    return () => {
-      setInput("");
-      setMessages([]);
-      setUser(false);
-      setChatUser(false);
-    };
   }, []);
 
   useEffect(() => {
@@ -61,16 +55,10 @@ function Chat({ chatId, handleChatToggle }) {
           );
         });
     }
-    setInput("");
-    setMessages([]);
-    setUser(false);
-    setChatUser(false);
   }, [chatUser]);
 
   const sendMessage = (event, like) => {
     event.preventDefault();
-
-    console.log(event);
 
     if (like) {
       db.collection("chats").add({

@@ -6,12 +6,11 @@ import {
 } from "@heroicons/react/outline";
 import { ThumbUpIcon } from "@heroicons/react/solid";
 import { Menu } from "@headlessui/react";
-import { session, useSession } from "next-auth/client";
+import { useSession } from "next-auth/client";
 import { useEffect, useState } from "react";
 import InputBox from "./InputBox";
 import Comment from "./Comment";
 import { calcElapsedTime } from "./Stories";
-import { comment } from "postcss";
 function Post({
   postId,
   username,
@@ -35,52 +34,46 @@ function Post({
         .onSnapshot((snapshot) => {
           setComments(snapshot.docs.map((doc) => doc));
         });
-    }
-    return () => {
-      setLikes(false);
-      setComments(false);
-      setdisplayComments(false);
-    };
-  }, [postId]);
 
-  useEffect(() => {
-    if (postId) {
       db.collection("posts")
         .doc(postId)
         .collection("likes")
         .onSnapshot((snapshot) => {
-          setLikes(snapshot.docs.map((doc) => doc));
+          setLikes(
+            snapshot.docs.map((doc) => {
+              doc.data().username;
+            })
+          );
         });
     }
-    return () => {
-      setLikes(false);
-      setComments(false);
-      setdisplayComments(false);
-    };
   }, [postId]);
 
   const handleLike = (e) => {
     e.preventDefault();
-    let found = false;
 
-    for (var i = 0; i < likes.length; i++) {
-      if (likes[i].data().username === session.user.name) {
-        found = true;
-        break;
-      }
-    }
-    if (!found) {
-      db.collection("posts")
-        .doc(postId)
-        .collection("likes")
-        .add({ username: session.user.name });
-    } else {
-      db.collection("posts")
-        .doc(postId)
-        .collection("likes")
-        .doc(likes[i].id)
-        .delete();
-    }
+    db.collection("posts")
+      .doc(postId)
+      .collection("likes")
+      .where("username", "==", session.user.name)
+      .get()
+      .then((querySnapshot) => {
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach((doc) => {
+            if (doc.exists) {
+              db.collection("posts")
+                .doc(postId)
+                .collection("likes")
+                .doc(doc.id)
+                .delete();
+            }
+          });
+        } else {
+          db.collection("posts")
+            .doc(postId)
+            .collection("likes")
+            .add({ username: session.user.name });
+        }
+      });
   };
 
   return (
