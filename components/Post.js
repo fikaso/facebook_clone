@@ -4,6 +4,7 @@ import {
   ShareIcon,
   DotsHorizontalIcon,
 } from "@heroicons/react/outline";
+import Image from "next/image";
 import { ThumbUpIcon } from "@heroicons/react/solid";
 import { Menu } from "@headlessui/react";
 import { useSession } from "next-auth/client";
@@ -82,7 +83,14 @@ function Post({
         <div className="flex flex-col mx-5 ">
           <div className="flex items-center justify-between">
             <div className="flex space-x-2 items-center mb-2">
-              <img src={image} alt="profile_image" />
+              <Image
+                src={image}
+                alt="posted by image"
+                height={40}
+                width={40}
+                objectFit="cover"
+                className="rounded-full"
+              />
               <div>
                 <p className="text-black">{username}</p>
                 <p className="text-sm text-gray-500 hover:underline">
