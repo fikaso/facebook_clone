@@ -138,12 +138,7 @@ function Post({
         </div>
         {postImage && (
           <div className="h-56 md:h-96 bg-white flex my-3 justify-center ">
-            <img
-              src={postImage}
-              objectFit="cover"
-              layout="fill"
-              className="object-contain"
-            />
+            <img src={postImage} layout="fill" className="object-contain" />
           </div>
         )}
         {likes.length ? (

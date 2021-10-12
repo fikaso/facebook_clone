@@ -1,9 +1,7 @@
 import { SearchIcon } from "@heroicons/react/outline";
 import { DotsHorizontalIcon, VideoCameraIcon } from "@heroicons/react/solid";
-import { useState } from "react";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { db } from "../firebase";
-import Chat from "./Chat";
 import Contact from "./Contact";
 
 function Widgets({ handleChatToggle }) {
