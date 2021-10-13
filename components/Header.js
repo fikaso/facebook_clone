@@ -29,6 +29,7 @@ function Header(ses) {
           width={40}
           height={40}
           layout="fixed"
+          className="cursor-pointer hover:scale-105"
           onClick={(e) => router.push("/")}
         />
 

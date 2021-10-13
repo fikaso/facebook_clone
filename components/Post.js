@@ -179,7 +179,13 @@ function Post({
               likes.includes(session.user.name) ? "text-blue-500" : ""
             }`}
           />
-          <p className="text-xs sm:text-base">Like</p>
+          <p
+            className={`text-xs sm:text-base ${
+              likes.includes(session.user.name) ? "text-blue-500" : ""
+            }`}
+          >
+            Like
+          </p>
         </div>
         <div
           onClick={(e) => setdisplayComments(!displayComments)}

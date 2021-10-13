@@ -91,20 +91,22 @@ function InputBox({ buttons, placeholder, postToComment }) {
 
   return (
     <div
-      className={`bg-white p-1 text-gray-500 font-medium ${
+      className={`bg-white p-1 text-gray-500 font-medium overflow-y-scroll scrollbar-hide ${
         buttons ? "mt-6 rounded-2xl shadow-md" : ""
       } `}
     >
-      <div className="flex space-x-4 p-4 items-center">
-        <Image
-          className="rounded-full"
-          src={session.user.image}
-          width={40}
-          height={40}
-        />
+      <div className="flex space-x-3 p-4 items-center">
+        <div className="hidden lg:flex">
+          <Image
+            className="rounded-full"
+            src={session.user.image}
+            width={40}
+            height={40}
+          />
+        </div>
         <form className="flex flex-1">
           <input
-            className="rounded-full flex-grow bg-gray-100 focus:outline-none p-2"
+            className="rounded-full flex-1 bg-gray-100 focus:outline-none p-2"
             type="text"
             ref={inputRef}
             placeholder={
