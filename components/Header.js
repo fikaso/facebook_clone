@@ -60,10 +60,10 @@ function Header(ses) {
           src={session.user.image}
           className="rounded-full cursor-pointer"
           width="40"
-          height="40  "
+          height="40"
         />
 
-        <p className="hidden md:flex font-semibold whitespace-nowrap pr-3">
+        <p className="hidden lg:flex font-semibold whitespace-nowrap pr-3">
           {session.user.name}
         </p>
         <ViewGridIcon className="icon" />

@@ -12,7 +12,7 @@ function Comment({
   timestamp,
 }) {
   const [session] = useSession();
-  const [likes, setLikes] = useState(false);
+  const [likes, setLikes] = useState([]);
 
   useEffect(() => {
     if (commentId) {
@@ -22,7 +22,7 @@ function Comment({
         .doc(commentId)
         .collection("likes")
         .onSnapshot((snapshot) => {
-          setLikes(snapshot.docs.map((doc) => doc));
+          setLikes(snapshot.docs.map((doc) => doc.data().username));
         });
     }
   }, [postId, commentId]);
@@ -60,6 +60,7 @@ function Comment({
         }
       });
   };
+
   return (
     <div className="flex space-x-2 p-2 bg-white text-sm">
       <img src={userImage} alt="userImage" className="rounded-full h-10 " />
@@ -69,7 +70,11 @@ function Comment({
           <p className="text-gray-700">{comment}</p>
           {likes.length > 0 && (
             <div className="absolute bottom-6 right-3 flex items-center text-md text-gray-500">
-              <ThumbUpIcon className="h-5 text-blue-500" />
+              <ThumbUpIcon
+                className={`h-5 ${
+                  likes.includes(session.user.name) ? "text-blue-500" : ""
+                } `}
+              />
               <p>{likes.length}</p>
             </div>
           )}
@@ -78,7 +83,7 @@ function Comment({
           <p
             onClick={handleLike}
             className={`hover:underline cursor-pointer ${
-              likes.length ? "text-blue-500" : ""
+              likes.includes(session.user.name) ? "text-blue-500" : ""
             }`}
           >
             Like

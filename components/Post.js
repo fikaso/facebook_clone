@@ -23,7 +23,7 @@ function Post({
   deleteFunction,
 }) {
   const [session] = useSession();
-  const [likes, setLikes] = useState(false);
+  const [likes, setLikes] = useState([]);
   const [comments, setComments] = useState(false);
   const [displayComments, setdisplayComments] = useState(false);
 
@@ -40,11 +40,7 @@ function Post({
         .doc(postId)
         .collection("likes")
         .onSnapshot((snapshot) => {
-          setLikes(
-            snapshot.docs.map((doc) => {
-              doc.data().username;
-            })
-          );
+          setLikes(snapshot.docs.map((doc) => doc.data().username));
         });
     }
   }, [postId]);
@@ -66,6 +62,8 @@ function Post({
                 .collection("likes")
                 .doc(doc.id)
                 .delete();
+
+              setLikes(likes.filter((likedBy) => likedBy != session.user.name));
             }
           });
         } else {
@@ -177,7 +175,9 @@ function Post({
       >
         <div onClick={(e) => handleLike(e)} className="inputIcon rounded-none">
           <ThumbUpIcon
-            className={`h-4 ${likes.length > 0 ? "text-blue-500" : ""}`}
+            className={`h-4 ${
+              likes.includes(session.user.name) ? "text-blue-500" : ""
+            }`}
           />
           <p className="text-xs sm:text-base">Like</p>
         </div>
