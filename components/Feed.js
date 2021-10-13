@@ -4,7 +4,7 @@ import Posts from "./Posts";
 
 function Feed() {
   return (
-    <div className="flex-grow h-screen pb-44 pt-6 mx-5">
+    <div className="flex-grow h-screen pb-44 pt-6 mx-2">
       <div className="mx-auto max-w-md md:max-w-lg lg:max-w-3xl">
         {/* Stories */}
         <Stories />
