@@ -4,13 +4,10 @@ import Posts from "./Posts";
 
 function Feed() {
   return (
-    <div className="flex-grow h-screen pb-44 pt-6 mx-2">
-      <div className="mx-auto max-w-md md:max-w-lg lg:max-w-3xl">
-        {/* Stories */}
+    <div className="flex flex-1 h-screen pb-44 pt-6 items-center justify-center">
+      <div className="w-full sm:w-5/6 lg:w-9/12 xl:w-7/12 2xl:w-1/2">
         <Stories />
-        {/* Input */}
         <InputBox buttons={true} />
-        {/* Posts */}
         <Posts />
       </div>
     </div>

@@ -13,7 +13,7 @@ function Posts() {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center justify-center">
       {realTimePosts?.docs.map((post) => (
         <Post
           key={post.id}
