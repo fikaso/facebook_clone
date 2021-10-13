@@ -91,7 +91,7 @@ function InputBox({ buttons, placeholder, postToComment }) {
 
   return (
     <div
-      className={`bg-white p-1 text-gray-500 font-medium overflow-y-scroll scrollbar-hide ${
+      className={`bg-white p-1 text-gray-500 font-medium ${
         buttons ? "mt-6 rounded-2xl shadow-md" : ""
       } `}
     >
