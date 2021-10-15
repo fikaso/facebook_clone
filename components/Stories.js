@@ -29,8 +29,12 @@ function Stories() {
 }
 export const calcElapsedTime = (timestamp) => {
   if (timestamp) {
-    let res = parseInt((Date.now() - timestamp.toMillis()) / 1000 / 60 / 60);
-    return res;
+    let hours = parseInt((Date.now() - timestamp.toMillis()) / 1000 / 60 / 60);
+    if (hours > 24) {
+      return timestamp.toDate().toLocaleDateString("en-GB");
+    } else {
+      return hours + "h";
+    }
   }
 };
 

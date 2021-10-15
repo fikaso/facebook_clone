@@ -35,7 +35,7 @@ function Story({ id, storyImage, hours, userImage }) {
             layout="fill"
           />
 
-          <p className="absolute top-2 right-2 text-white text-xl">{hours}h</p>
+          <p className="absolute top-2 right-2 text-white text-xl">{hours}</p>
         </div>
       )}
     </Link>

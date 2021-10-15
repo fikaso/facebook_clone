@@ -26,6 +26,11 @@ function Post({
   const [likes, setLikes] = useState([]);
   const [comments, setComments] = useState(false);
   const [displayComments, setdisplayComments] = useState(false);
+  const [elapsedHours, setElapsedHours] = useState();
+
+  useEffect(() => {
+    setElapsedHours(calcElapsedTime(timestamp));
+  }, [timestamp]);
 
   useEffect(() => {
     if (postId) {
@@ -92,7 +97,7 @@ function Post({
               <div>
                 <p className="text-black">{username}</p>
                 <p className="text-sm text-gray-500 hover:underline">
-                  {calcElapsedTime(timestamp)}h
+                  {elapsedHours}
                 </p>
               </div>
             </div>
