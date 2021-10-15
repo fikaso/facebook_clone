@@ -13,7 +13,7 @@ function Contact({ contactId, src, name, toggleChat }) {
       >
         <Image
           className="rounded-full"
-          src={"/" + src}
+          src={src}
           objectFit="cover"
           width={50}
           height={50}

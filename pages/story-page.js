@@ -86,7 +86,7 @@ export default function StoryPage({ story }) {
             />
           ) : (
             <PauseIcon
-              className="h-10 text-white absolute top-4 right-1 hover:scale-125"
+              className="h-10 text-white absolute top-6 right-3 hover:scale-125"
               onClick={() => setStoryPaused(!storyPaused)}
             />
           )}

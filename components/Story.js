@@ -3,7 +3,7 @@ import Image from "next/image";
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
 
-function Story({ id, storyImage, hours }) {
+function Story({ id, storyImage, hours, userImage }) {
   useEffect(() => {
     if (hours > 24) {
       db.collection("stories").doc(id).delete();
@@ -23,7 +23,7 @@ function Story({ id, storyImage, hours }) {
           <Image
             unoptimized={true}
             className="absolute rounded-full z-50 top-10"
-            src={storyImage}
+            src={userImage}
             width={40}
             height={40}
             objectFit="cover"

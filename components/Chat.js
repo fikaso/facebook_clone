@@ -4,6 +4,7 @@ import { XIcon } from "@heroicons/react/outline";
 import { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { useSession } from "next-auth/client";
+import Image from "next/image";
 import firebase from "firebase/compat/app";
 import Message from "./Message";
 
@@ -15,13 +16,6 @@ function Chat({ chatId, handleChatToggle }) {
   const [chatUser, setChatUser] = useState();
 
   useEffect(() => {
-    db.collection("users").onSnapshot((snapshot) => {
-      setUser(
-        snapshot.docs.filter((doc) => doc.data().email == session.user.email)[0]
-          .ref
-      );
-    });
-
     db.collection("users")
       .where("email", "==", session.user.email)
       .get()
@@ -82,8 +76,17 @@ function Chat({ chatId, handleChatToggle }) {
   return (
     <div className="bg-white ml-1 w-64">
       <div className="flex justify-between shadow-md p-2">
-        <div>
-          <img src="" alt="" />
+        <div className="flex items-center space-x-2">
+          {chatUser && (
+            <Image
+              className="rounded-full"
+              src={chatUser?.data().image}
+              objectFit="cover"
+              width={40}
+              height={40}
+              layout="fixed"
+            />
+          )}
           <p>{chatUser?.data().username}</p>
         </div>
         <div className="flex items-center">

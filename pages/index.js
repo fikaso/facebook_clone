@@ -36,7 +36,7 @@ export default function Home({ session }) {
   };
 
   return (
-    <div className="bg-gray-100 max-w-full">
+    <div className="bg-gray-100 max-w-full overflow-x-auto">
       <Head>
         <title>Facebook</title>
       </Head>

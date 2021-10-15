@@ -29,6 +29,7 @@ function UploadStory({ image }) {
       .add({
         name: session.user.name,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        userImage: session.user.image,
       })
       .then((doc) => {
         if (imageToPost) {

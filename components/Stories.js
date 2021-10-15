@@ -20,6 +20,7 @@ function Stories() {
             id={story.id}
             storyImage={story.data().storyImage}
             hours={calcElapsedTime(story.data().timestamp)}
+            userImage={story.data().userImage}
           />
         ))}
       </div>
