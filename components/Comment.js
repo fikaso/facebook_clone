@@ -13,6 +13,19 @@ function Comment({
 }) {
   const [session] = useSession();
   const [likes, setLikes] = useState([]);
+  const [elapsedHours, setElapsedHours] = useState(false);
+  const [datePosted, setDatePosted] = useState(false);
+
+  useEffect(() => {
+    if (timestamp) {
+      const { res, isDate } = calcElapsedTime(timestamp);
+      if (isDate) {
+        setDatePosted(res);
+      } else {
+        setElapsedHours(res);
+      }
+    }
+  }, [timestamp]);
 
   useEffect(() => {
     if (commentId) {
@@ -89,7 +102,7 @@ function Comment({
             Like
           </p>
           <p className="hover:underline cursor-pointer">Reply</p>
-          <p>{timestamp ? calcElapsedTime(timestamp) : ""}h</p>
+          <p>{elapsedHours ? elapsedHours + "h" : datePosted}</p>
         </div>
       </div>
     </div>
