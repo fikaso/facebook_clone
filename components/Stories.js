@@ -19,7 +19,7 @@ function Stories() {
             key={story.id}
             id={story.id}
             storyImage={story.data().storyImage}
-            hours={calcElapsedTime(story.data().timestamp)}
+            elapsedTime={calcElapsedTime(story.data().timestamp)}
             userImage={story.data().userImage}
           />
         ))}
@@ -28,12 +28,15 @@ function Stories() {
   );
 }
 export const calcElapsedTime = (timestamp) => {
+  let isDate = false;
   if (timestamp) {
-    let hours = parseInt((Date.now() - timestamp.toMillis()) / 1000 / 60 / 60);
-    if (hours > 24) {
-      return timestamp.toDate().toLocaleDateString("en-GB");
+    let res = parseInt((Date.now() - timestamp.toMillis()) / 1000 / 60 / 60);
+    if (res > 24) {
+      isDate = true;
+      res = timestamp.toDate().toLocaleDateString("en-GB");
+      return { res, isDate };
     } else {
-      return hours + "h";
+      return { res, isDate };
     }
   }
 };

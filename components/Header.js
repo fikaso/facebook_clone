@@ -21,7 +21,7 @@ function Header(ses) {
   const [session] = useSession();
   const router = useRouter();
   return (
-    <div className="flex sticky top-0 z-50 bg-white items-center p-2 lg:px-5 shadow-md">
+    <div className="flex sticky top-0 z-50 bg-white items-center p-2 lg:px-5 shadow-md overflow-hidden">
       {/* Left */}
       <div className="flex items-center">
         <Image
@@ -45,7 +45,7 @@ function Header(ses) {
 
       {/* Center */}
       <div className="flex justify-center flex-grow">
-        <div className="flex space-x-6 md:space-x-2">
+        <div className="flex space-x-2 sm:space-x-12 md:space-x-6">
           <HeaderIcon active Icon={HomeIcon} />
           <HeaderIcon Icon={FlagIcon} />
           <HeaderIcon Icon={ShoppingCartIcon} />

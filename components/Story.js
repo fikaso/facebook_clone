@@ -3,12 +3,18 @@ import Image from "next/image";
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
 
-function Story({ id, storyImage, hours, userImage }) {
+function Story({ id, storyImage, elapsedTime, userImage }) {
+  const [storyElapsedTime, setStoryElapsedTime] = useState(false);
+
   useEffect(() => {
-    if (hours > 24) {
+    const { res, isDate } = elapsedTime;
+    if (isDate) {
       db.collection("stories").doc(id).delete();
+    } else {
+      setStoryElapsedTime(res);
     }
   }, []);
+
   return (
     <Link
       href={{
@@ -35,7 +41,11 @@ function Story({ id, storyImage, hours, userImage }) {
             layout="fill"
           />
 
-          <p className="absolute top-2 right-2 text-white text-xl">{hours}</p>
+          {storyElapsedTime && (
+            <p className="absolute top-2 right-2 text-white text-xl">
+              {storyElapsedTime}h
+            </p>
+          )}
         </div>
       )}
     </Link>
